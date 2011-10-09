@@ -1,6 +1,23 @@
-#GenXen #
+GenXen #
+#############################
 
-A script for automating VM deployment.
+A script for automating Xen VM deployment.
 
-It will take user input and then create a new Xen VM based on a pre-built base img, 
-changing appropriate values such as number of VCPUs, Memory, Hostname and IP address.
+It requires that you have a base disk.img and swap.img already created.
+I created mine with:
+xen-create-image --pygrub --size=50Gb --swap=9Gb --vcpus=2 --memory 6Gb --dist=squeeze --dhcp --passwd --dir=/var/virt-machines --hostname=xen-squeeze-base
+
+Fill in some of the variables at the top of GenXen.pl before running, then simply:
+./GenXen.pl
+
+The interactive part will ask for hostname, memory size, vCPUs, IP address, then generate a unique Xen mac address, and
+write these all to a xen config file which will be saved in /etc/xen/
+
+It'll copy you're disk.img and swap.img to destination dir, mount the disk.img and create appropriate files for:
+/etc/hostname
+/etc/hosts
+/etc/network/interfaces 
+
+After that you should be good to launch with:
+
+xm create -c /etc/xen/whatever-your-hostname-is.cfg
