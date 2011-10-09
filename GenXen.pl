@@ -66,7 +66,6 @@ sub genxen {
         copy_base_img($hostname);
         build_config($hostname,$vcpu,$memory,$ip);
         mount_loopback($hostname,$ip,$defaultgw,$netmask,$destdisk_img);
-        exit;
     } else {
         print "\n*bzzt* host building bot now terminating due to luser error *bzzztq**\n\n";
         exit;
@@ -99,7 +98,7 @@ sub build_config {
     print "\n*Bzz*uilding COnfig..\n\n";
     my %vars = (domainsdir => $domainsdir, hostname => $hostname, vcpu => $vcpu, memory => $memory, ip => $ip, mac => $mac);
     my $outputconfigfile = $xentemplate->fill_in(HASH => \%vars);
-    print $outputconfigfile . "\n";
+    #print $outputconfigfile . "\n";
     my $hostconfig = "$xenconfigdir" . "$hostname" . ".cfg";
     open(CONFIG,">$hostconfig") || die "*zzbt* malfunction - can't open $hostconfig for writing - $!\n";
     print CONFIG $outputconfigfile;
@@ -118,8 +117,8 @@ sub mount_loopback {
     my $vmetcdir = $mntpoint . "/" . "etc/";
 
     if( !-d  $vmetcdir ) {
-        system("umount $mntpoint");
-        remove_tree($mntpoint);
+#        system("umount $mntpoint");
+#        remove_tree($mntpoint);
         die "**zzvt* Malfunction - Mount point does not seem to exist\n";
     }
 
@@ -129,21 +128,24 @@ sub mount_loopback {
 
     print "\n**Generat*ing VM /etc/hosts file..\n\n";
     my $outputhosts = $hoststemplate->fill_in(HASH => \%vars);
-    print $outputhosts . "\n";
+    #print $outputhosts . "\n";
     open(VMHOSTS, ">$vmhosts") || die "*zzt* malfunction - cannot open $vmhosts - $!\n";
     print VMHOSTS $outputhosts;
+    close(VMHOSTS);
  
     print "Gener*ting VM /etc/hostname file..\n\n";
     my $outputhostname = $hostnametemplate->fill_in(HASH => \%vars);
-    print $outputhostname . "\n";
+    #print $outputhostname . "\n";
     open(VMHOSTNAME, ">$vmhostname") || die "*zzt* malfunction - cannot open $vmhostname - $!\n";
     print VMHOSTNAME $outputhostname;
+    close(VMHOSTNAME);
 
     print "Gen*rating VM /etc/network/interfaces file..\n\n";
     my $outputinterfaces = $interfacestemplate->fill_in(HASH => \%vars);
-    print $outputinterfaces . "\n";
+    #print $outputinterfaces . "\n";
     open(VMINTERFACES, ">$vminterfaces") || die "*zzt* malfunction - cannot open $vminterfaces - $!\n";
     print VMINTERFACES $vminterfaces;
+    close(VMINTERFACES);
 
     system("umount $mntpoint");
 #    remove_tree($mntpoint);
