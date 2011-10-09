@@ -13,7 +13,7 @@ Fill in some of the variables at the top of GenXen.pl before running, then simpl
 The interactive part will ask for hostname, memory size, vCPUs, IP address, then generate a unique Xen mac address, and
 write these all to a xen config file which will be saved in /etc/xen/
 
-It'll copy you're disk.img and swap.img to destination dir, mount the disk.img and create appropriate files for:
+It'll copy your disk.img and swap.img to destination dir, mount the disk.img and create appropriate files for:
 /etc/hostname
 /etc/hosts
 /etc/network/interfaces 
