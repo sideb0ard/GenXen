@@ -1,0 +1,6 @@
+#GenXen #
+
+A script for automating VM deployment.
+
+It will take user input and then create a new Xen VM based on a pre-built base img, 
+changing appropriate values such as number of VCPUs, Memory, Hostname and IP address.
