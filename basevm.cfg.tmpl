@@ -1,10 +1,10 @@
 bootloader = '/usr/lib/xen-default/bin/pygrub'
-vcpus       = '{$cpu}'
-memory      = '{$mem}'
+vcpus       = '{$vcpu}'
+memory      = '{$memory}'
 root        = '/dev/xvda2 ro'
 disk        = [
-                  'file:/var/virt-machines/domains/{$hostname}/disk.img,xvda2,w',
-                  'file:/var/virt-machines/domains/{$hostname}/swap.img,xvda1,w',
+                  'file:{$domainsdir}/{$hostname}/disk.img,xvda2,w',
+                  'file:{$domainsdir}/{$hostname}/swap.img,xvda1,w',
               ]
 name        = '{$hostname}'
 vif         = [ 'ip={$ip},mac={$mac}' ]
