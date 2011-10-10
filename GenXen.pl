@@ -110,16 +110,17 @@ sub mount_loopback {
     my %vars = (hostname => $hostname, ip => $ip, defaultgw => $defaultgw, netmask => $netmask);
 
     my $mntpoint = "/tmp/" . $hostname;
-    make_path("$mntpoint") || die "*malfunctionzzz - mount point $mntpoint exists..\n";
+    unless ( -d $mntpoint) {
+        make_path("$mntpoint"); 
+    }
     print "Mounting $dskimg at $mntpoint\n\n";
     system("mount -o loop $dskimg $mntpoint");
 
     my $vmetcdir = $mntpoint . "/" . "etc/";
 
     if( !-d  $vmetcdir ) {
-#        system("umount $mntpoint");
-#        remove_tree($mntpoint);
-        die "**zzvt* Malfunction - Mount point does not seem to exist\n";
+        system("umount $mntpoint");
+        die "**zzvt* Malfunction - Mount loopback doesn't seem to have worked\n";
     }
 
     my $vmhosts = $vmetcdir . "hosts";
@@ -144,11 +145,10 @@ sub mount_loopback {
     my $outputinterfaces = $interfacestemplate->fill_in(HASH => \%vars);
     #print $outputinterfaces . "\n";
     open(VMINTERFACES, ">$vminterfaces") || die "*zzt* malfunction - cannot open $vminterfaces - $!\n";
-    print VMINTERFACES $vminterfaces;
+    print VMINTERFACES $outputinterfaces;
     close(VMINTERFACES);
 
     system("umount $mntpoint");
-#    remove_tree($mntpoint);
 }
 
 sub gen_mac_address {
